@@ -15,7 +15,7 @@ pipeline {
 
          git branch 'main',
 
-           url: 'https://github.com/Nith15-droids/Maven.git',
+           url: 'https://github.com/namithakaregowdar-source/mavenjenkins.git',
 
            credentialsid: 'github-token'
        }
