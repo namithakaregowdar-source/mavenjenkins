@@ -1,58 +1,51 @@
 pipeline {
+    agent any
 
-  agent any
-
-   tools {
-     maven 'Maven'
-     jdk 'JDK25'
-   }
+    tools {
+        maven 'Maven'
+        jdk 'JDK25'
+    }
 
     stages {
 
-     stage("Checkout") {
+        // Stage 1: Checkout source code
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Nith15-droids/Maven.git',
+                    credentialsId: 'github-token'
 
-       steps {
+                echo 'Source code downloaded successfully'
+            }
+        }
 
-         git branch :'main',
+        // Stage 2: Build the application
+        stage('Build') {
+            steps {
+                bat 'mvn clean compile'
+            }
+        }
 
-           url: 'https://github.com/namithakaregowdar-source/mavenjenkins.git',
-
-           credentialsid: 'github-token'
-       }
-     }
-
-   stage('Build') {
-
-    steps {
-
-     sh 'mvn clean compile'
-
-}
-   }
-      stage('Test') {
+        // Stage 3: Execute test cases
+        stage('Test') {
             steps {
                 bat 'mvn test'
             }
         }
 
+        // Stage 4: Package the application
         stage('Package') {
             steps {
                 bat 'mvn package'
             }
         }
-    }
 
-    post {
-        success {
-            echo 'Pipeline executed successfully!'
-        }
-
-        failure {
-            echo 'Pipeline execution failed!'
-        }
-
-        always {
-            echo 'Pipeline execution completed.'
+        // Stage 5: Run the application
+        stage('Run Application') {
+            steps {
+                bat 'mvn exec:java -Dexec.mainClass="com.example.app.App"'
+            }
         }
     }
+
 }
