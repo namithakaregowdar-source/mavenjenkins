@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Nith15-droids/Maven.git',
+                    url: 'https://github.com/namithakaregowdar-source/mavenjenkins.git',
                     credentialsId: 'github-token'
 
                 echo 'Source code downloaded successfully'
